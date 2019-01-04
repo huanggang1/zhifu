@@ -1,0 +1,32 @@
+.new-btn-login-sp{
+    padding: 1px;
+    display: inline-block;
+    width: 75%;
+}
+.new-btn-login {
+    background-color: #02aaf1;
+    color: #FFFFFF;
+    font-weight: bold;
+    border: none;
+    width: 10%;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+.content dt{
+    width:100px;
+    display:inline-block;
+    float: left;
+    margin-left: 20px;
+    color: #666;
+    font-size: 13px;
+    margin-top: 8px;
+}
+.content dd{
+    margin-left:120px;
+    margin-bottom:5px;
+}
+.content dd input {
+    width: 30%;
+    height: 28px;
+}
