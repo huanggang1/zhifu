@@ -63,9 +63,7 @@ class AlipayPayment extends PayMent {
 //        $goods2->setQuantity(1);
 //        //得到商品1明细数组
 //        $goods2Arr = $goods2->getGoodsDetail();
-
 //        $goodsDetailList = array($goods1Arr, $goods2Arr);
-
         //第三方应用授权令牌,商户授权系统商开发模式下使用
 //        $appAuthToken = ""; //根据真实值填写
         // 创建请求builder，设置请求参数
@@ -92,9 +90,41 @@ class AlipayPayment extends PayMent {
     public function payMentStatus() {
         
     }
+    /**
+     * 支付宝退款请求
+     * @param type $data
+     * @return type
+     */
+    public function payMentRefund($data) {
+        header("Content-type: text/html; charset=utf-8");
+        require_once './Alipay/f2fpay/service/AlipayTradeService.php';
+        require_once './Alipay/f2fpay/buildermodel/AlipayTradeRefundContentBuilder.php';
+        //商户订单号和支付宝交易号不能同时为空。 trade_no、  out_trade_no如果同时存在优先取trade_no
+        //商户订单号，和支付宝交易号二选一
+        $out_trade_no = trim($_POST['WIDout_trade_no']);
 
-    public function payMentRefund() {
-        
+        //支付宝交易号，和商户订单号二选一
+        $trade_no = trim($_POST['WIDtrade_no']);
+
+        //退款金额，不能大于订单总金额
+        $refund_amount = trim($_POST['WIDrefund_amount']);
+
+        //退款的原因说明
+        $refund_reason = trim($_POST['WIDrefund_reason']);
+
+        //标识一次退款请求，同一笔交易多次退款需要保证唯一，如需部分退款，则此参数必传。
+        $out_request_no = trim($_POST['WIDout_request_no']);
+
+        $RequestBuilder = new \AlipayTradeRefundContentBuilder();
+        $RequestBuilder->setTradeNo($trade_no);
+        $RequestBuilder->setOutTradeNo($out_trade_no);
+        $RequestBuilder->setRefundAmount($refund_amount);
+        $RequestBuilder->setRefundReason($refund_reason);
+        $RequestBuilder->setOutRequestNo($out_request_no);
+
+        $Response = new \AlipayTradeService($config);
+        $result = $Response->Refund($RequestBuilder);
+        return $result;
     }
 
 }

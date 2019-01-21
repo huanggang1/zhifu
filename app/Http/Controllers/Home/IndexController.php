@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Input;
 //use App\Libraries\PayMent;
 use App\Libraries\AlipayPayment;
 use App\Libraries\WeChatPayment;
-
+use SimpleSoftwareIO\QrCode\Facades\QrCode; 
 class IndexController extends Controller {
 
     /**
@@ -15,6 +15,7 @@ class IndexController extends Controller {
      * @return type
      */
     public function getIndex() {
+        QrCode::generate('Hello World!'); 
         return view('Home.index');
     }
 
@@ -23,7 +24,7 @@ class IndexController extends Controller {
      * @return string
      */
     public function getList() {
-        return "支付成功";
+        return "SUCCESS";
     }
 
     public function getAsyn() {
@@ -152,6 +153,7 @@ class IndexController extends Controller {
             $obj->payMentWeb($data);
         }
     }
+
     /**
      * 微信支付异步处理回调
      * 
@@ -174,6 +176,18 @@ class IndexController extends Controller {
                 file_put_contents('./log/ac_simple.txt', "支付成功" . $resSign . "---" . $sign . PHP_EOL, FILE_APPEND);
             }
         }
+    }
+
+    public function getRefund() {
+        //支付宝支付
+        if ($param['payType'] == "Alipay") {
+            $obj = new AlipayPayment();
+        }
+        //微信支付
+        if ($param['payType'] == "WeChat") {
+            $obj = new WeChatPayment();
+        }
+        $return = $obj->payMentRefund($data);
     }
 
 }

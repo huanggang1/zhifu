@@ -12,7 +12,7 @@ abstract class PayMent {
 
     /* 支付退款 */
 
-    abstract function payMentRefund();
+    abstract function payMentRefund($data);
 
     /* web扫码支付 */
 

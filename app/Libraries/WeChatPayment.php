@@ -35,7 +35,7 @@ class WeChatPayment extends PayMent {
         
     }
 
-    public function payMentRefund() {
+    public function payMentRefund($data) {
         
     }
 
